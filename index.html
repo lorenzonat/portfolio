@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorenzo Natalicchio — Director de Fotografía</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Barlow:ital,wght@0,200;0,300;0,400;1,200&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: 'NeueKaine';
+  src: url('neue-kaine-variable.ttf') format('truetype');
+  font-weight: 400 900;
+}
+:root {
+  --black:      #070806;
+  --dark:       #0d0f0b;
+  --dark2:      #141610;
+  --dark3:      #1c1f17;
+  --dark4:      #252820;
+  --green:      #5a7838;
+  --green-dim:  #374a22;
+  --green-pale: rgba(90,120,56,0.09);
+  --white:      #e6e2d8;
+  --gray:       #787060;
+  --gray-dim:   #383830;
+  --serif:      'Cormorant Garamond', serif;
+  --kaine:      'NeueKaine', sans-serif;
+  --sans:       'Barlow', sans-serif;
+  --mono:       'DM Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:15px;
+  line-height:1.75;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* GRAIN */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='0.11'/%3E%3C/svg%3E");
+  opacity:.6;
+}
+
+/* CURSOR */
+.cursor{position:fixed;width:7px;height:7px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:exclusion;}
+.cursor-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(90,120,56,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .22s ease-out,height .22s ease-out,border-color .22s;}
+.cursor-ring.big{width:50px;height:50px;border-color:var(--green);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;background:linear-gradient(to bottom,rgba(7,8,6,.97) 0%,transparent 100%);}
+.nav-logo{font-family:var(--kaine);font-size:15px;font-variation-settings:'wght' 700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);text-decoration:none;}
+.nav-logo em{color:var(--green);font-style:normal;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.lang-btn{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid var(--gray-dim);color:var(--gray);padding:5px 14px;cursor:none;transition:all .2s;}
+.lang-btn:hover{border-color:var(--green);color:var(--green);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 84px;position:relative;overflow:hidden;}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:blur(3px) grayscale(100%);transform:scale(1.06);pointer-events:none;}
+.hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,8,6,.88) 0%,rgba(7,8,6,.45) 50%,rgba(7,8,6,.3) 100%);pointer-events:none;}
+.hero-rule{position:absolute;left:52px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent 0%,var(--gray-dim) 25%,var(--green-dim) 55%,transparent 100%);opacity:.25;}
+
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--green);margin-bottom:22px;opacity:0;animation:riseIn .7s .3s forwards;}
+
+.hero-name{
+  font-family:var(--kaine);
+  font-size:clamp(70px,10.5vw,148px);
+  line-height:.88;letter-spacing:-.01em;text-transform:uppercase;
+  color:var(--white);
+  opacity:0;animation:riseIn .9s .5s forwards;
+}
+.hero-name .g{color:var(--green);}
+/* animated letters — NO css transition, JS drives every frame */
+.hero-name .ltr{
+  display:inline-block;
+  font-variation-settings:'wght' 400;
+  will-change:font-variation-settings;
+}
+
+.hero-sub{margin-top:30px;display:flex;align-items:center;gap:14px;opacity:0;animation:riseIn .8s .9s forwards;}
+.hero-pin{width:10px;height:14px;position:relative;flex-shrink:0;}
+.hero-pin::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green);}
+.hero-pin::after{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:1px;height:6px;background:linear-gradient(to bottom,var(--green),transparent);}
+.hero-sub-text{font-family:var(--sans);font-size:11px;font-weight:200;letter-spacing:.26em;text-transform:uppercase;color:var(--gray);}
+
+.hero-scroll{position:absolute;right:52px;bottom:84px;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeIn 1s 1.3s forwards;}
+.hero-scroll span{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--gray);writing-mode:vertical-rl;}
+.scroll-bar{width:1px;height:54px;background:linear-gradient(to bottom,var(--green-dim),transparent);animation:pulse 2.2s 1.6s ease-in-out infinite;}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+/* SECTIONS */
+section{padding:120px 52px;}
+.s-label{font-family:var(--mono);font-size:8px;letter-spacing:.38em;text-transform:uppercase;color:var(--green);margin-bottom:60px;display:flex;align-items:center;gap:18px;}
+.s-label::after{content:'';width:56px;height:1px;background:var(--green-dim);}
+
+/* WORK */
+#work{padding-top:80px;}
+.filters{display:flex;gap:3px;margin-bottom:44px;flex-wrap:wrap;}
+.f-btn{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid var(--gray-dim);color:var(--gray);padding:7px 18px;cursor:none;transition:all .2s;}
+.f-btn:hover,.f-btn.active{border-color:var(--green);color:var(--green);background:var(--green-pale);}
+
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.work-item{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--dark2);cursor:none;}
+.work-item.span2{grid-column:span 2;}
+.work-item.hidden{display:none;}
+
+.w-bg{position:absolute;inset:0;transition:transform .7s cubic-bezier(.25,.46,.45,.94);}
+.work-item:hover .w-bg{transform:scale(1.05);}
+
+.bg1{background:linear-gradient(148deg,#0f1309 0%,#1a2010 55%,#090c05 100%);}
+.bg2{background:linear-gradient(162deg,#0b0f08 0%,#141a0e 55%,#070906 100%);}
+.bg3{background:linear-gradient(128deg,#0d1108 0%,#181c0e 55%,#090b06 100%);}
+.bg4{background:linear-gradient(155deg,#0f1009 0%,#1b1c10 55%,#080906 100%);}
+.bg5{background:linear-gradient(140deg,#0a0e07 0%,#141808 55%,#060705 100%);}
+
+.w-orb{position:absolute;width:55%;height:75%;border-radius:50%;background:radial-gradient(circle,rgba(90,120,56,.18) 0%,transparent 70%);top:5%;right:-10%;filter:blur(36px);pointer-events:none;opacity:.5;transition:opacity .5s;}
+.work-item:hover .w-orb{opacity:1;}
+
+.w-blur{position:absolute;inset:0;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:backdrop-filter .4s;}
+.work-item:hover .w-blur{backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);}
+
+.w-info{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,8,6,.9) 0%,rgba(7,8,6,.1) 45%,transparent 70%);display:flex;flex-direction:column;justify-content:flex-end;padding:20px 22px;pointer-events:none;}
+.w-tag{font-family:var(--mono);font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:5px;}
+.w-title{font-family:var(--kaine);font-size:18px;font-variation-settings:'wght' 600;text-transform:uppercase;letter-spacing:.04em;color:var(--white);line-height:1.1;}
+.w-meta{font-size:11px;font-weight:200;color:var(--gray);margin-top:3px;letter-spacing:.05em;}
+.w-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--green);width:0;transition:width .55s cubic-bezier(.25,.46,.45,.94);}
+.work-item:hover .w-bar{width:100%;}
+
+/* ABOUT */
+#about{background:var(--dark);}
+.about-wrap{display:grid;grid-template-columns:1fr 1.55fr;gap:88px;align-items:start;}
+.portrait-frame{position:relative;}
+.portrait-ph{width:100%;aspect-ratio:3/4;background:var(--dark2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.portrait-ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(90,120,56,.12) 0%,transparent 70%);}
+.portrait-ph::after{content:'LN';font-family:var(--kaine);font-size:100px;font-variation-settings:'wght' 800;color:var(--dark4);letter-spacing:.12em;text-transform:uppercase;position:relative;}
+.portrait-border{position:absolute;top:14px;left:-14px;bottom:-14px;right:14px;border:1px solid var(--green-dim);opacity:.3;pointer-events:none;}
+
+.about-head{font-family:var(--kaine);font-size:clamp(36px,4.5vw,58px);font-variation-settings:'wght' 700;text-transform:uppercase;letter-spacing:.02em;line-height:.95;color:var(--white);margin-bottom:36px;}
+.about-p{font-size:14px;font-weight:300;color:var(--gray);line-height:1.9;margin-bottom:18px;}
+
+/* EQUIPMENT */
+#equipment{border-top:1px solid var(--dark2);}
+.eq-card{background:var(--dark);border:1px solid var(--dark3);padding:44px;position:relative;overflow:hidden;max-width:680px;transition:border-color .3s;}
+.eq-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.25,.46,.45,.94);}
+.eq-card:hover::before{transform:scaleY(1);}
+.eq-card:hover{border-color:var(--gray-dim);}
+.eq-card::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(90,120,56,.07) 0%,transparent 70%);top:-80px;right:-60px;filter:blur(48px);pointer-events:none;}
+.eq-num{font-family:var(--kaine);font-size:80px;font-variation-settings:'wght' 900;color:var(--dark3);line-height:1;margin-bottom:-16px;transition:color .35s;}
+.eq-card:hover .eq-num{color:var(--dark4);}
+.eq-title{font-family:var(--kaine);font-size:23px;font-variation-settings:'wght' 700;text-transform:uppercase;letter-spacing:.06em;color:var(--white);margin-bottom:8px;}
+.eq-model{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--green);margin-bottom:18px;}
+.eq-desc{font-size:13px;font-weight:300;color:var(--gray);line-height:1.85;margin-bottom:22px;}
+.eq-specs{display:flex;flex-wrap:wrap;gap:6px;}
+.spec{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);border:1px solid var(--dark3);padding:4px 10px;transition:border-color .2s,color .2s;}
+.eq-card:hover .spec{border-color:var(--gray-dim);color:var(--white);}
+
+/* CONTACT */
+#contact{background:var(--dark);position:relative;overflow:hidden;padding:140px 52px;}
+.contact-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--kaine);font-size:280px;font-variation-settings:'wght' 900;text-transform:uppercase;color:rgba(90,120,56,.04);pointer-events:none;white-space:nowrap;line-height:1;letter-spacing:-.02em;}
+.contact-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(90,120,56,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(90px);pointer-events:none;}
+.contact-inner{position:relative;max-width:680px;}
+.contact-head{font-family:var(--kaine);font-size:clamp(46px,7.5vw,98px);font-variation-settings:'wght' 800;text-transform:uppercase;letter-spacing:-.01em;line-height:.9;color:var(--white);margin-bottom:16px;}
+.contact-head em{font-family:var(--serif);font-style:italic;font-size:.72em;font-weight:300;color:var(--green);text-transform:none;letter-spacing:0;}
+.contact-sub{font-size:11px;font-weight:200;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);margin-bottom:52px;}
+.contact-form{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:580px;}
+.form-field{background:var(--dark2);border:1px solid var(--dark3);position:relative;transition:border-color .25s;}
+.form-field:focus-within{border-color:var(--green-dim);}
+.form-field.full{grid-column:span 2;}
+.form-field label{display:block;font-family:var(--mono);font-size:7px;letter-spacing:.25em;text-transform:uppercase;color:var(--green);padding:12px 16px 0;}
+.form-field input,.form-field textarea{display:block;width:100%;background:none;border:none;outline:none;font-family:var(--sans);font-size:13px;font-weight:300;color:var(--white);padding:5px 16px 12px;resize:none;}
+.form-field textarea{min-height:96px;}
+.form-submit{grid-column:span 2;margin-top:3px;background:none;border:1px solid var(--green-dim);color:var(--green);font-family:var(--kaine);font-size:13px;font-variation-settings:'wght' 600;letter-spacing:.2em;text-transform:uppercase;padding:15px;cursor:none;transition:all .25s;position:relative;overflow:hidden;}
+.form-submit::before{content:'';position:absolute;inset:0;background:var(--green-pale);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.25,.46,.45,.94);}
+.form-submit:hover::before{transform:scaleX(1);}
+.form-submit:hover{border-color:var(--green);color:var(--white);}
+.form-submit span{position:relative;}
+.form-success{display:none;padding:18px;border:1px solid var(--green-dim);background:var(--green-pale);font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);grid-column:span 2;text-align:center;}
+.contact-alt{margin-top:36px;display:flex;align-items:center;gap:18px;}
+.contact-alt-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gray-dim);}
+.contact-email{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--gray);text-decoration:none;border-bottom:1px solid var(--gray-dim);padding-bottom:2px;transition:color .25s,border-color .25s;}
+.contact-email:hover{color:var(--green);border-color:var(--green);}
+.contact-social{margin-top:36px;display:flex;gap:26px;list-style:none;}
+.contact-social a{font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gray-dim);text-decoration:none;transition:color .25s;}
+.contact-social a:hover{color:var(--green);}
+
+/* FOOTER */
+footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--dark2);}
+.footer-copy{font-family:var(--mono);font-size:8px;letter-spacing:.15em;color:var(--gray-dim);}
+.footer-mark{font-family:var(--kaine);font-size:13px;font-variation-settings:'wght' 700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-dim);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  nav{padding:20px 24px;}
+  .nav-links{display:none;}
+  section{padding:80px 24px;}
+  .hero{padding:0 24px 64px;}
+  .hero-rule{left:24px;}
+  .hero-scroll{display:none;}
+  .work-grid{grid-template-columns:1fr;}
+  .work-item.span2{grid-column:span 1;}
+  .about-wrap{grid-template-columns:1fr;gap:48px;}
+  .contact-form{grid-template-columns:1fr;}
+  .form-field.full,.form-submit{grid-column:span 1;}
+  footer{padding:20px 24px;}
+  #contact{padding:100px 24px;}
+  .contact-bg-word{font-size:120px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Lorenzo <em>Natalicchio</em></a>
+  <ul class="nav-links">
+    <li><a href="#work"><span data-es="Proyectos" data-en="Projects">Proyectos</span></a></li>
+    <li><a href="#about"><span data-es="Sobre mí" data-en="About">Sobre mí</span></a></li>
+    <li><a href="#equipment"><span data-es="Equipo" data-en="Equipment">Equipo</span></a></li>
+    <li><a href="#contact"><span data-es="Contacto" data-en="Contact">Contacto</span></a></li>
+  </ul>
+  <button class="lang-btn" id="langBtn">EN</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img" src="hero-bg.jpg" alt="">
+  <div class="hero-vignette"></div>
+  <div class="hero-rule"></div>
+
+  <p class="hero-eyebrow">
+    <span data-es="Cinematografía · Dirección · Steadicam" data-en="Cinematography · Direction · Steadicam">Cinematografía · Dirección · Steadicam</span>
+  </p>
+
+  <!-- z and final o are .ltr — JS animates font-variation-settings on scroll -->
+  <h1 class="hero-name" id="heroName">Loren<span class="ltr" id="ltrZ">z</span>o<br><span class="g">Natalicchi<span class="ltr" id="ltrN">o</span></span></h1>
+
+  <div class="hero-sub">
+    <div class="hero-pin"></div>
+    <span class="hero-sub-text" data-es="Buenos Aires, Argentina" data-en="Buenos Aires, Argentina">Buenos Aires, Argentina</span>
+  </div>
+
+  <div class="hero-scroll">
+    <span data-es="scroll" data-en="scroll">scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <p class="s-label"><span data-es="01 — Proyectos" data-en="01 — Projects">01 — Proyectos</span></p>
+  <div class="filters">
+    <button class="f-btn active" data-filter="all"><span data-es="Todo" data-en="All">Todo</span></button>
+    <button class="f-btn" data-filter="df"><span data-es="Dir. Fotografía" data-en="Dir. Photography">Dir. Fotografía</span></button>
+    <button class="f-btn" data-filter="director"><span data-es="Dirección" data-en="Direction">Dirección</span></button>
+    <button class="f-btn" data-filter="steadicam">Steadicam</button>
+    <button class="f-btn" data-filter="camara"><span data-es="Cámara" data-en="Camera">Cámara</span></button>
+  </div>
+  <div class="work-grid">
+
+    <!-- ALLÍ DONDE LAS COSAS PASAN — featured -->
+    <div class="work-item span2 reveal" data-tags="df camara">
+      <div class="w-bg bg1"><div class="w-orb"></div></div>
+      <div class="w-blur"></div>
+      <div class="w-info">
+        <p class="w-tag">DF / Cámara</p>
+        <h3 class="w-title">Allí Donde Las Cosas Pasan</h3>
+        <p class="w-meta"><span data-es="Cortometraje" data-en="Short film">Cortometraje</span> · 2023 · <span data-es="Dir." data-en="Dir.">Dir.</span> Yana Martínez</p>
+      </div>
+      <div class="w-bar"></div>
+    </div>
+
+    <!-- JOBS -->
+    <div class="work-item reveal" data-tags="df camara">
+      <div class="w-bg bg2"><div class="w-orb"></div></div>
+      <div class="w-blur"></div>
+      <div class="w-info">
+        <p class="w-tag">DF / Cámara</p>
+        <h3 class="w-title">Jobs</h3>
+        <p class="w-meta"><span data-es="Publicidad" data-en="Commercial">Publicidad</span> · 2025 · <span data-es="Dir." data-en="Dir.">Dir.</span> M. Kotelanski &amp; J. I. Romitelli</p>
+      </div>
+      <div class="w-bar"></div>
+    </div>
+
+    <!-- EL GRAN CARMELO — gaffer englobado en df para el filtro -->
+    <div class="work-item reveal" data-tags="df">
+      <div class="w-bg bg3"><div class="w-orb"></div></div>
+      <div class="w-blur"></div>
+      <div class="w-info">
+        <p class="w-tag">Gaffer</p>
+        <h3 class="w-title">El Gran Carmelo</h3>
+        <p class="w-meta"><span data-es="Cortometraje" data-en="Short film">Cortometraje</span> · 2024 · <span data-es="Dir." data-en="Dir.">Dir.</span> Patricio Mosse</p>
+      </div>
+      <div class="w-bar"></div>
+    </div>
+
+    <!-- LOS DEUDOS -->
+    <div class="work-item reveal" data-tags="steadicam">
+      <div class="w-bg bg4"><div class="w-orb"></div></div>
+      <div class="w-blur"></div>
+      <div class="w-info">
+        <p class="w-tag">Steadicam</p>
+        <h3 class="w-title">Los Deudos</h3>
+        <p class="w-meta"><span data-es="Cortometraje" data-en="Short film">Cortometraje</span> · 2026 · <span data-es="Dir." data-en="Dir.">Dir.</span> Pablo Marino</p>
+      </div>
+      <div class="w-bar"></div>
+    </div>
+
+    <!-- HUELLA — featured -->
+    <div class="work-item span2 reveal" data-tags="df camara director">
+      <div class="w-bg bg5"><div class="w-orb"></div></div>
+      <div class="w-blur"></div>
+      <div class="w-info">
+        <p class="w-tag">DF / Director / Cámara</p>
+        <h3 class="w-title">Huella</h3>
+        <p class="w-meta"><span data-es="Publicidad" data-en="Commercial">Publicidad</span> · 2024 · Prod. Overo Negro</p>
+      </div>
+      <div class="w-bar"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="s-label"><span data-es="02 — Sobre mí" data-en="02 — About">02 — Sobre mí</span></p>
+  <div class="about-wrap">
+    <div class="portrait-frame reveal">
+      <div class="portrait-ph"></div>
+      <div class="portrait-border"></div>
+    </div>
+    <div>
+      <p class="about-p reveal"
+        data-es="Soy Lorenzo Natalicchio, realizador audiovisual radicado en Buenos Aires, Argentina. Egresado de la carrera de Diseño de Imagen y Sonido (UBA), me he especializado en el área de Fotografía con experiencia en proyectos de ficción y comerciales."
+        data-en="I'm Lorenzo Natalicchio, an audiovisual filmmaker based in Buenos Aires, Argentina. I graduated from the Image and Sound Design program at UBA, and have specialized in cinematography with experience in fiction and commercial projects.">
+        Soy Lorenzo Natalicchio, realizador audiovisual radicado en Buenos Aires, Argentina. Egresado de la carrera de Diseño de Imagen y Sonido (UBA), me he especializado en el área de Fotografía con experiencia en proyectos de ficción y comerciales.
+      </p>
+      <p class="about-p reveal"
+        data-es="Actualmente me encuentro formándome como operador de steadicam, rol para el que cuento con equipo profesional propio y participación en más de una decena de cortometrajes."
+        data-en="I'm currently developing my practice as a steadicam operator — a role for which I have my own professional rig and participation in over a dozen short films.">
+        Actualmente me encuentro formándome como operador de steadicam, rol para el que cuento con equipo profesional propio y participación en más de una decena de cortometrajes.
+      </p>
+      <p class="about-p reveal"
+        data-es="Haber sido el director de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos."
+        data-en="Having directed several projects allows me to bridge the narrative and the visual, integrating both languages to take the work where we all want it to go.">
+        Haber sido el director de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPMENT -->
+<section id="equipment">
+  <p class="s-label"><span data-es="03 — Equipo" data-en="03 — Equipment">03 — Equipo</span></p>
+  <div class="eq-card reveal">
+    <div class="eq-num">01</div>
+    <h3 class="eq-title">Rever Evo</h3>
+    <p class="eq-model">STEADICAM RIG</p>
+    <p class="eq-desc"
+      data-es="Sled, brazo y chaleco con capacidad de carga de hasta 34 kg. Configuración optimizada para rodaje continuo en exteriores e interiores y de alta exigencia técnica."
+      data-en="Sled, arm and vest with a payload capacity of up to 74 lb. Configuration optimized for continuous shooting in exterior and interior environments and high technical demands.">
+      Sled, brazo y chaleco con capacidad de carga de hasta 34 kg. Configuración optimizada para rodaje continuo en exteriores e interiores y de alta exigencia técnica.
+    </p>
+    <div class="eq-specs">
+      <span class="spec" data-es="Carga máx. 34 kg" data-en="Max payload 74 lb">Carga máx. 34 kg</span>
+      <span class="spec">Low mode</span>
+      <span class="spec">Tripod quick release</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg-word">LN.</div>
+  <div class="contact-orb"></div>
+  <div class="contact-inner">
+    <h2 class="contact-head reveal">
+      <span data-es="Hablemos" data-en="Let's talk">Hablemos</span><br>
+      <em data-es="de tu proyecto." data-en="about your project.">de tu proyecto.</em>
+    </h2>
+    <p class="contact-sub reveal"
+      data-es="Disponible para colaborar con vos"
+      data-en="Available to collaborate with you">
+      Disponible para colaborar con vos
+    </p>
+    <form class="contact-form reveal" id="contactForm">
+      <div class="form-field">
+        <label data-es="Nombre" data-en="Name">Nombre</label>
+        <input type="text" name="nombre" required>
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
+      <div class="form-field full">
+        <label data-es="Mensaje" data-en="Message">Mensaje</label>
+        <textarea name="mensaje"></textarea>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <span data-es="Mensaje enviado — te respondo a la brevedad." data-en="Message sent — I'll get back to you shortly.">Mensaje enviado — te respondo a la brevedad.</span>
+      </div>
+      <button type="submit" class="form-submit"><span data-es="Enviar mensaje →" data-en="Send message →">Enviar mensaje →</span></button>
+    </form>
+    <div class="contact-alt reveal">
+      <span class="contact-alt-lbl" data-es="o escribí directo" data-en="or write directly">o escribí directo</span>
+      <a id="contactMailLink" class="contact-email"></a>
+    </div>
+    <ul class="contact-social reveal">
+      <li><a href="#" target="_blank">Instagram</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy" data-es="© 2025 Lorenzo Natalicchio. Todos los derechos reservados." data-en="© 2025 Lorenzo Natalicchio. All rights reserved.">© 2025 Lorenzo Natalicchio. Todos los derechos reservados.</span>
+  <span class="footer-mark">LN.</span>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // CURSOR
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('curRing');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a,button,.work-item,.eq-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('big'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+  });
+
+  // HERO LETTER WEIGHT ON SCROLL
+  const ltrZ = document.getElementById('ltrZ');
+  const ltrN = document.getElementById('ltrN');
+  function updateLetterWeight() {
+    const scrollEl = document.scrollingElement || document.documentElement;
+    const scrolled = scrollEl.scrollTop || window.scrollY || 0;
+    const heroH    = document.querySelector('.hero').offsetHeight;
+    const p        = Math.min(scrolled / (heroH * 0.75), 1);
+    const w        = Math.round(400 + p * 500);
+    const fvs      = `'wght' ${w}`;
+    ltrZ.style.fontVariationSettings = fvs;
+    ltrN.style.fontVariationSettings = fvs;
+  }
+  window.addEventListener('scroll', updateLetterWeight, { passive: true });
+  document.addEventListener('scroll', updateLetterWeight, { passive: true });
+  document.documentElement.addEventListener('scroll', updateLetterWeight, { passive: true });
+
+  // REVEAL
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  // FILTER
+  document.querySelectorAll('.f-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.work-item').forEach(item => {
+        item.classList.toggle('hidden', f !== 'all' && !(item.dataset.tags || '').includes(f));
+      });
+    });
+  });
+
+  // LANGUAGE
+  let lang = 'es';
+  document.getElementById('langBtn').addEventListener('click', () => {
+    lang = lang === 'es' ? 'en' : 'es';
+    document.getElementById('langBtn').textContent = lang === 'es' ? 'EN' : 'ES';
+    document.querySelectorAll('[data-es]').forEach(el => {
+      const v = el.getAttribute('data-' + lang);
+      if (v) el.textContent = v;
+    });
+  });
+
+  // MAIL — built via JS to avoid proxy obfuscation
+  const ml = document.getElementById('contactMailLink');
+  const u = 'lorenzo.natalicchio', d = 'gmail.com';
+  ml.href = 'mailto:' + u + '@' + d;
+  ml.textContent = u + '@' + d;
+
+  // FORM
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('formSuccess').style.display = 'block';
+    document.querySelector('.form-submit').style.display = 'none';
+    e.target.querySelectorAll('input,textarea').forEach(f => f.disabled = true);
+  });
+
+});
+</script></body>
+</html>
