@@ -44,7 +44,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;b
 .cursor-ring.big{width:50px;height:50px;border-color:var(--green);}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:26px 52px;background:linear-gradient(to bottom,rgba(7,8,6,.97) 0%,transparent 100%);}
-.nav-logo{font-family:var(--kaine);font-size:15px;font-variation-settings:'wght' 700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);text-decoration:none;}
+.nav-logo{font-family:var(--kaine);font-size:15px;font-variation-settings:'wght' 500;letter-spacing:.14em;text-transform:uppercase;color:var(--white);text-decoration:none;}
 .nav-logo em{color:var(--green);font-style:normal;}
 .nav-links{display:flex;gap:40px;list-style:none;}
 .nav-links a{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .2s;}
@@ -52,14 +52,45 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .lang-btn{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid var(--gray-dim);color:var(--gray);padding:5px 14px;cursor:none;transition:all .2s;}
 .lang-btn:hover{border-color:var(--green);color:var(--green);}
 
+/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 84px;position:relative;overflow:hidden;}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:blur(3px) grayscale(100%);transform:scale(1.06);pointer-events:none;}
 .hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,8,6,.9) 0%,rgba(7,8,6,.5) 50%,rgba(7,8,6,.25) 100%);pointer-events:none;}
 .hero-rule{position:absolute;left:52px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent 0%,var(--gray-dim) 25%,var(--green-dim) 55%,transparent 100%);opacity:.25;}
 .hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--green);margin-bottom:22px;opacity:0;animation:riseIn .7s .3s forwards;}
-.hero-name{font-family:var(--kaine);font-size:clamp(64px,10.5vw,148px);line-height:.88;letter-spacing:-.01em;text-transform:uppercase;color:var(--white);opacity:0;animation:riseIn .9s .5s forwards;}
+
+/* Hero name — all letters start at same weight (500).
+   .ltr (Z and N) are driven by JS: wght 500→900, wdth 75→125 */
+.hero-name{
+  font-family:var(--kaine);
+  font-size:clamp(64px,10.5vw,148px);
+  line-height:.88;
+  letter-spacing:-.01em;
+  text-transform:uppercase;
+  color:var(--white);
+  font-variation-settings:'wght' 500;
+  opacity:0;
+  animation:riseIn .9s .5s forwards;
+}
 .hero-name .g{color:var(--green);}
-.hero-name .ltr{display:inline-block;font-variation-settings:'wght' 400,'wdth' 75;will-change:font-variation-settings;}
+/* Z and N — same starting weight as rest, animated by JS */
+.hero-name .ltr{
+  display:inline-block;
+  font-variation-settings:'wght' 500,'wdth' 75;
+  will-change:font-variation-settings;
+}
+
+/* Decorative lines around hero name for typographic interest */
+.hero-name-wrap{position:relative;display:inline-block;}
+.hero-name-wrap::before{
+  content:'';
+  position:absolute;
+  left:-24px;top:50%;
+  width:18px;height:1px;
+  background:var(--green-dim);
+  opacity:.6;
+}
+
 .hero-sub{margin-top:30px;display:flex;align-items:center;gap:14px;opacity:0;animation:riseIn .8s .9s forwards;}
 .hero-pin{width:10px;height:14px;position:relative;flex-shrink:0;}
 .hero-pin::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green);}
@@ -73,10 +104,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 
+/* SECTIONS */
 section{padding:120px 52px;}
 .s-label{font-family:var(--mono);font-size:8px;letter-spacing:.38em;text-transform:uppercase;color:var(--green);margin-bottom:60px;display:flex;align-items:center;gap:18px;}
 .s-label::after{content:'';width:56px;height:1px;background:var(--green-dim);}
 
+/* WORK */
 #work{padding-top:80px;}
 .filters{display:flex;gap:3px;margin-bottom:44px;flex-wrap:wrap;}
 .f-btn{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid var(--gray-dim);color:var(--gray);padding:7px 18px;cursor:none;transition:all .2s;}
@@ -103,6 +136,7 @@ section{padding:120px 52px;}
 .w-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--green);width:0;transition:width .55s cubic-bezier(.25,.46,.45,.94);}
 .work-item:hover .w-bar{width:100%;}
 
+/* ABOUT */
 #about{background:var(--dark);}
 .about-wrap{display:grid;grid-template-columns:1fr 1.55fr;gap:88px;align-items:center;}
 .portrait-frame{position:relative;}
@@ -110,10 +144,17 @@ section{padding:120px 52px;}
 .portrait-ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(144,192,96,.12) 0%,transparent 70%);}
 .portrait-ph::after{content:'LN';font-family:var(--kaine);font-size:100px;font-variation-settings:'wght' 800;color:var(--dark4);letter-spacing:.12em;text-transform:uppercase;position:relative;}
 .portrait-border{position:absolute;top:14px;left:-14px;bottom:-14px;right:14px;border:1px solid var(--green-dim);opacity:.3;pointer-events:none;}
-.about-bio{display:flex;flex-direction:column;justify-content:center;gap:24px;}
-.about-p{font-size:17px;font-weight:300;color:var(--gray);line-height:1.9;margin:0;}
-.about-p strong{font-weight:400;color:var(--white);}
 
+/* Bio — larger, richer treatment */
+.about-bio{display:flex;flex-direction:column;justify-content:center;gap:0;}
+.about-p{font-size:19px;font-weight:300;color:var(--gray);line-height:1.85;margin:0;padding:22px 0;border-bottom:1px solid var(--dark3);}
+.about-p:first-child{padding-top:0;}
+.about-p:last-child{border-bottom:none;padding-bottom:0;}
+.about-p strong{font-weight:400;color:var(--white);}
+/* Hanging number for each paragraph */
+.about-p .p-num{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--green);display:block;margin-bottom:10px;}
+
+/* EQUIPMENT */
 #equipment{border-top:1px solid var(--dark2);}
 .eq-card{background:var(--dark);border:1px solid var(--dark3);padding:44px;position:relative;overflow:hidden;max-width:680px;transition:border-color .3s;}
 .eq-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.25,.46,.45,.94);}
@@ -129,6 +170,7 @@ section{padding:120px 52px;}
 .spec{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);border:1px solid var(--dark3);padding:4px 10px;transition:border-color .2s,color .2s;}
 .eq-card:hover .spec{border-color:var(--gray-dim);color:var(--white);}
 
+/* CONTACT */
 #contact{background:var(--dark);position:relative;overflow:hidden;padding:140px 52px;}
 .contact-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--kaine);font-size:280px;font-variation-settings:'wght' 900;text-transform:uppercase;color:rgba(144,192,96,.04);pointer-events:none;white-space:nowrap;line-height:1;letter-spacing:-.02em;}
 .contact-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(144,192,96,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(90px);pointer-events:none;}
@@ -175,7 +217,7 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
   .work-grid{grid-template-columns:1fr;}
   .work-item.span2{grid-column:span 1;}
   .about-wrap{grid-template-columns:1fr;gap:48px;align-items:start;}
-  .about-p{font-size:15px;}
+  .about-p{font-size:15px;padding:18px 0;}
   .contact-form{grid-template-columns:1fr;}
   .form-field.full,.form-submit{grid-column:span 1;}
   footer{padding:20px 24px;}
@@ -205,6 +247,7 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
   <div class="hero-vignette"></div>
   <div class="hero-rule"></div>
   <p class="hero-eyebrow"><span data-es="Cinematografía · Dirección · Steadicam" data-en="Cinematography · Direction · Steadicam">Cinematografía · Dirección · Steadicam</span></p>
+  <!-- All letters share wght 500 on load. Only Z and N (.ltr) evolve on scroll. -->
   <h1 class="hero-name" id="heroName">LOREN<span class="ltr" id="ltrZ">Z</span>O<br><span class="g"><span class="ltr" id="ltrN">N</span>ATALICCHIO</span></h1>
   <div class="hero-sub">
     <div class="hero-pin"></div>
@@ -226,26 +269,29 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
     <button class="f-btn" data-filter="camara"><span data-es="Cámara" data-en="Camera">Cámara</span></button>
   </div>
   <div class="work-grid">
+
     <div class="work-item span2 reveal" data-tags="df camara">
       <div class="w-bg bg1"><div class="w-orb"></div></div>
       <div class="w-blur"></div>
       <div class="w-info">
-        <p class="w-tag">DF / Cámara</p>
+        <p class="w-tag" data-es="DF / Cámara" data-en="DP / Camera Op">DF / Cámara</p>
         <h3 class="w-title">Allí Donde Las Cosas Pasan</h3>
         <p class="w-meta"><span data-es="Cortometraje" data-en="Short film">Cortometraje</span> · 2023 · <span data-es="Dir." data-en="Dir.">Dir.</span> Yana Martínez</p>
       </div>
       <div class="w-bar"></div>
     </div>
+
     <div class="work-item reveal" data-tags="df camara">
       <div class="w-bg bg2"><div class="w-orb"></div></div>
       <div class="w-blur"></div>
       <div class="w-info">
-        <p class="w-tag">DF / Cámara</p>
+        <p class="w-tag" data-es="DF / Cámara" data-en="DP / Camera Op">DF / Cámara</p>
         <h3 class="w-title">Jobs</h3>
         <p class="w-meta"><span data-es="Publicidad" data-en="Commercial">Publicidad</span> · 2025 · <span data-es="Dir." data-en="Dir.">Dir.</span> M. Kotelanski &amp; J. I. Romitelli</p>
       </div>
       <div class="w-bar"></div>
     </div>
+
     <div class="work-item reveal" data-tags="df">
       <div class="w-bg bg3"><div class="w-orb"></div></div>
       <div class="w-blur"></div>
@@ -256,26 +302,29 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
       </div>
       <div class="w-bar"></div>
     </div>
+
     <div class="work-item reveal" data-tags="steadicam">
       <div class="w-bg bg4"><div class="w-orb"></div></div>
       <div class="w-blur"></div>
       <div class="w-info">
-        <p class="w-tag">Steadicam</p>
+        <p class="w-tag" data-es="Steadicam" data-en="Steadicam Op">Steadicam</p>
         <h3 class="w-title">Los Deudos</h3>
         <p class="w-meta"><span data-es="Cortometraje" data-en="Short film">Cortometraje</span> · 2026 · <span data-es="Dir." data-en="Dir.">Dir.</span> Pablo Marino</p>
       </div>
       <div class="w-bar"></div>
     </div>
+
     <div class="work-item span2 reveal" data-tags="df camara director">
       <div class="w-bg bg5"><div class="w-orb"></div></div>
       <div class="w-blur"></div>
       <div class="w-info">
-        <p class="w-tag">DF / Director / Cámara</p>
+        <p class="w-tag" data-es="DF / Director / Cámara" data-en="DP / Director / Camera Op">DF / Director / Cámara</p>
         <h3 class="w-title">Huella</h3>
         <p class="w-meta"><span data-es="Publicidad" data-en="Commercial">Publicidad</span> · 2024 · Prod. Overo Negro</p>
       </div>
       <div class="w-bar"></div>
     </div>
+
   </div>
 </section>
 
@@ -287,9 +336,18 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
       <div class="portrait-border"></div>
     </div>
     <div class="about-bio">
-      <p class="about-p reveal">Soy <strong>Lorenzo Natalicchio</strong>, realizador audiovisual radicado en <strong>Buenos Aires, Argentina</strong>. Egresado de la carrera de <strong>Diseño de Imagen y Sonido (UBA)</strong>, me he especializado en el área de <strong>Fotografía</strong> con experiencia en proyectos de <strong>ficción y comerciales</strong>.</p>
-      <p class="about-p reveal">Actualmente me encuentro formándome como <strong>operador de steadicam</strong>, rol para el que cuento con equipo propio y participación en más de una decena de cortometrajes.</p>
-      <p class="about-p reveal">Haber sido el <strong>director</strong> de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos.</p>
+      <p class="about-p reveal">
+        <span class="p-num">01</span>
+        <span data-es-html="Soy <strong>Lorenzo Natalicchio</strong>, realizador audiovisual radicado en <strong>Buenos Aires, Argentina</strong>. Egresado de la carrera de <strong>Diseño de Imagen y Sonido (UBA)</strong>, me he especializado en el área de <strong>Fotografía</strong> con experiencia en proyectos de <strong>ficción y comerciales</strong>." data-en-html="I'm <strong>Lorenzo Natalicchio</strong>, an audiovisual filmmaker based in <strong>Buenos Aires, Argentina</strong>. I graduated from the <strong>Image and Sound Design</strong> program at UBA, and have specialized in <strong>Cinematography</strong> with experience in <strong>fiction and commercial</strong> projects.">Soy <strong>Lorenzo Natalicchio</strong>, realizador audiovisual radicado en <strong>Buenos Aires, Argentina</strong>. Egresado de la carrera de <strong>Diseño de Imagen y Sonido (UBA)</strong>, me he especializado en el área de <strong>Fotografía</strong> con experiencia en proyectos de <strong>ficción y comerciales</strong>.</span>
+      </p>
+      <p class="about-p reveal">
+        <span class="p-num">02</span>
+        <span data-es-html="Actualmente me encuentro formándome como <strong>operador de steadicam</strong>, rol para el que cuento con equipo propio y participación en más de una decena de cortometrajes." data-en-html="I'm currently developing my practice as a <strong>steadicam operator</strong> — a role for which I have my own professional rig and participation in over a dozen short films.">Actualmente me encuentro formándome como <strong>operador de steadicam</strong>, rol para el que cuento con equipo propio y participación en más de una decena de cortometrajes.</span>
+      </p>
+      <p class="about-p reveal">
+        <span class="p-num">03</span>
+        <span data-es-html="Haber sido el <strong>director</strong> de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos." data-en-html="Having <strong>directed</strong> several projects allows me to bridge the narrative and the visual, integrating both languages to take the work where we all want it to go.">Haber sido el <strong>director</strong> de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos.</span>
+      </p>
     </div>
   </div>
 </section>
@@ -355,49 +413,57 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
 document.addEventListener('DOMContentLoaded', function() {
 
   // CURSOR
-  const cur = document.getElementById('cur');
-  const ring = document.getElementById('curRing');
-  document.addEventListener('mousemove', e => {
+  var cur = document.getElementById('cur');
+  var ring = document.getElementById('curRing');
+  document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
     ring.style.left = e.clientX + 'px';
     ring.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a,button,.work-item,.eq-card').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('big'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+  document.querySelectorAll('a,button,.work-item,.eq-card').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { ring.classList.add('big'); });
+    el.addEventListener('mouseleave', function() { ring.classList.remove('big'); });
   });
 
-  // HERO LETTER ANIMATION — Z in LORENZO and N in NATALICCHIO
-  // Both animate wght (400→900) and wdth (75→100) as user scrolls through hero
-  const ltrZ = document.getElementById('ltrZ');
-  const ltrN = document.getElementById('ltrN');
+  // HERO LETTER ANIMATION
+  // On load: Z and N share the same wght (500) as all other letters.
+  // On scroll: only Z and N grow in wght (500→900) and wdth (75→125).
+  // The rest of the name stays at wght 500 always.
+  var ltrZ = document.getElementById('ltrZ');
+  var ltrN = document.getElementById('ltrN');
+
   function updateLetters() {
-    const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
-    const heroH    = document.querySelector('.hero').offsetHeight;
-    const p        = Math.min(scrolled / (heroH * 0.75), 1);
-    const wght     = Math.round(400 + p * 500);
-    const wdth     = Math.round(75  + p * 25);
-    const fvs      = "'wght' " + wght + ", 'wdth' " + wdth;
+    var scrolled = window.scrollY || document.documentElement.scrollTop || 0;
+    var heroH    = document.querySelector('.hero').offsetHeight;
+    var p        = Math.min(scrolled / (heroH * 0.75), 1);
+    // Ease-in curve for more dramatic contrast
+    var pe       = p * p;
+    var wght     = Math.round(500 + pe * 400);   // 500 → 900
+    var wdth     = Math.round(75  + pe * 50);    // 75 → 125
+    var fvs      = "'wght' " + wght + ",'wdth' " + wdth;
     ltrZ.style.fontVariationSettings = fvs;
     ltrN.style.fontVariationSettings = fvs;
   }
+
+  // Run once on load to ensure initial state is correct
+  updateLetters();
   window.addEventListener('scroll', updateLetters, { passive: true });
 
-  // REVEAL ON SCROLL
-  const ro = new IntersectionObserver(entries => {
-    entries.forEach(e => {
+  // REVEAL
+  var ro = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
     });
   }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
 
   // FILTERS
-  document.querySelectorAll('.f-btn').forEach(btn => {
+  document.querySelectorAll('.f-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      var f = this.dataset.filter;
+      document.querySelectorAll('.f-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var f = btn.dataset.filter;
       document.querySelectorAll('.work-item').forEach(function(item) {
         item.classList.toggle('hidden', f !== 'all' && (item.dataset.tags || '').indexOf(f) === -1);
       });
@@ -405,23 +471,33 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // LANGUAGE TOGGLE
+  // Uses data-es / data-en for plain text nodes.
+  // Uses data-es-html / data-en-html for nodes that contain bold markup.
   var lang = 'es';
   document.getElementById('langBtn').addEventListener('click', function() {
     lang = lang === 'es' ? 'en' : 'es';
     this.textContent = lang === 'es' ? 'EN' : 'ES';
+
+    // Plain text elements
     document.querySelectorAll('[data-es]').forEach(function(el) {
       var v = el.getAttribute('data-' + lang);
       if (v) el.textContent = v;
     });
+
+    // HTML elements (bio paragraphs with bold)
+    document.querySelectorAll('[data-es-html]').forEach(function(el) {
+      var v = el.getAttribute('data-' + lang + '-html');
+      if (v) el.innerHTML = v;
+    });
   });
 
-  // MAIL — built via JS to avoid proxy obfuscation
+  // MAIL
   var ml = document.getElementById('contactMailLink');
   var u = 'lorenzo.natalicchio', d = 'gmail.com';
   ml.href = 'mailto:' + u + '@' + d;
   ml.textContent = u + '@' + d;
 
-  // CONTACT FORM
+  // FORM
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     document.getElementById('formSuccess').style.display = 'block';
