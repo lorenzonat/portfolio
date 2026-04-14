@@ -24,9 +24,9 @@
   --dark2:      #141610;
   --dark3:      #1c1f17;
   --dark4:      #252820;
-  --green:      #7aaa50;
-  --green-dim:  #4a6e2e;
-  --green-pale: rgba(122,170,80,0.10);
+  --green:      #90c060;
+  --green-dim:  #527a34;
+  --green-pale: rgba(144,192,96,0.10);
   --white:      #e6e2d8;
   --gray:       #a09880;
   --gray-dim:   #585850;
@@ -57,7 +57,7 @@ body::after{
 
 /* CURSOR */
 .cursor{position:fixed;width:7px;height:7px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:exclusion;}
-.cursor-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(122,170,80,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .22s ease-out,height .22s ease-out,border-color .22s;}
+.cursor-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(144,192,96,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .22s ease-out,height .22s ease-out,border-color .22s;}
 .cursor-ring.big{width:50px;height:50px;border-color:var(--green);}
 
 /* NAV */
@@ -132,7 +132,7 @@ section{padding:120px 52px;}
 .bg4{background:linear-gradient(155deg,#0f1009 0%,#1b1c10 55%,#080906 100%);}
 .bg5{background:linear-gradient(140deg,#0a0e07 0%,#141808 55%,#060705 100%);}
 
-.w-orb{position:absolute;width:55%;height:75%;border-radius:50%;background:radial-gradient(circle,rgba(122,170,80,.18) 0%,transparent 70%);top:5%;right:-10%;filter:blur(36px);pointer-events:none;opacity:.5;transition:opacity .5s;}
+.w-orb{position:absolute;width:55%;height:75%;border-radius:50%;background:radial-gradient(circle,rgba(144,192,96,.18) 0%,transparent 70%);top:5%;right:-10%;filter:blur(36px);pointer-events:none;opacity:.5;transition:opacity .5s;}
 .work-item:hover .w-orb{opacity:1;}
 
 .w-blur{position:absolute;inset:0;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:backdrop-filter .4s;}
@@ -147,15 +147,17 @@ section{padding:120px 52px;}
 
 /* ABOUT */
 #about{background:var(--dark);}
-.about-wrap{display:grid;grid-template-columns:1fr 1.55fr;gap:88px;align-items:start;}
+.about-wrap{display:grid;grid-template-columns:1fr 1.55fr;gap:88px;align-items:center;}
 .portrait-frame{position:relative;}
 .portrait-ph{width:100%;aspect-ratio:3/4;background:var(--dark2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.portrait-ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(122,170,80,.12) 0%,transparent 70%);}
+.portrait-ph::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(144,192,96,.12) 0%,transparent 70%);}
 .portrait-ph::after{content:'LN';font-family:var(--kaine);font-size:100px;font-variation-settings:'wght' 800;color:var(--dark4);letter-spacing:.12em;text-transform:uppercase;position:relative;}
 .portrait-border{position:absolute;top:14px;left:-14px;bottom:-14px;right:14px;border:1px solid var(--green-dim);opacity:.3;pointer-events:none;}
 
 .about-head{font-family:var(--kaine);font-size:clamp(36px,4.5vw,58px);font-variation-settings:'wght' 700;text-transform:uppercase;letter-spacing:.02em;line-height:.95;color:var(--white);margin-bottom:36px;}
-.about-p{font-size:16px;font-weight:300;color:var(--gray);line-height:1.9;margin-bottom:18px;}
+.about-bio{display:flex;flex-direction:column;justify-content:center;gap:24px;}
+.about-p{font-size:17px;font-weight:300;color:var(--gray);line-height:1.9;margin:0;}
+.about-p strong{font-weight:400;color:var(--white);letter-spacing:.01em;}
 
 /* EQUIPMENT */
 #equipment{border-top:1px solid var(--dark2);}
@@ -163,7 +165,7 @@ section{padding:120px 52px;}
 .eq-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.25,.46,.45,.94);}
 .eq-card:hover::before{transform:scaleY(1);}
 .eq-card:hover{border-color:var(--gray-dim);}
-.eq-card::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(122,170,80,.07) 0%,transparent 70%);top:-80px;right:-60px;filter:blur(48px);pointer-events:none;}
+.eq-card::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(144,192,96,.07) 0%,transparent 70%);top:-80px;right:-60px;filter:blur(48px);pointer-events:none;}
 .eq-num{font-family:var(--kaine);font-size:80px;font-variation-settings:'wght' 900;color:var(--dark3);line-height:1;margin-bottom:-16px;transition:color .35s;}
 .eq-card:hover .eq-num{color:var(--dark4);}
 .eq-title{font-family:var(--kaine);font-size:23px;font-variation-settings:'wght' 700;text-transform:uppercase;letter-spacing:.06em;color:var(--white);margin-bottom:8px;}
@@ -175,8 +177,8 @@ section{padding:120px 52px;}
 
 /* CONTACT */
 #contact{background:var(--dark);position:relative;overflow:hidden;padding:140px 52px;}
-.contact-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--kaine);font-size:280px;font-variation-settings:'wght' 900;text-transform:uppercase;color:rgba(122,170,80,.04);pointer-events:none;white-space:nowrap;line-height:1;letter-spacing:-.02em;}
-.contact-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(122,170,80,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(90px);pointer-events:none;}
+.contact-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--kaine);font-size:280px;font-variation-settings:'wght' 900;text-transform:uppercase;color:rgba(144,192,96,.04);pointer-events:none;white-space:nowrap;line-height:1;letter-spacing:-.02em;}
+.contact-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(144,192,96,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(90px);pointer-events:none;}
 .contact-inner{position:relative;max-width:680px;}
 .contact-head{font-family:var(--kaine);font-size:clamp(46px,7.5vw,98px);font-variation-settings:'wght' 800;text-transform:uppercase;letter-spacing:-.01em;line-height:.9;color:var(--white);margin-bottom:16px;}
 .contact-head em{font-family:var(--serif);font-style:italic;font-size:.72em;font-weight:300;color:var(--green);text-transform:none;letter-spacing:0;}
@@ -222,7 +224,7 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
   .hero-name{font-size:clamp(42px,11vw,80px);}
   .work-grid{grid-template-columns:1fr;}
   .work-item.span2{grid-column:span 1;}
-  .about-wrap{grid-template-columns:1fr;gap:48px;}
+  .about-wrap{grid-template-columns:1fr;gap:48px;align-items:start;}
   .about-p{font-size:15px;}
   .contact-form{grid-template-columns:1fr;}
   .form-field.full,.form-submit{grid-column:span 1;}
@@ -259,8 +261,8 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
     <span data-es="Cinematografía · Dirección · Steadicam" data-en="Cinematography · Direction · Steadicam">Cinematografía · Dirección · Steadicam</span>
   </p>
 
-  <!-- z and final o are .ltr — JS animates font-variation-settings on scroll -->
-  <h1 class="hero-name" id="heroName">Loren<span class="ltr" id="ltrZ">z</span>o<br><span class="g">Natalicchi<span class="ltr" id="ltrN">o</span></span></h1>
+  <!-- ltrZ = Z de LORENzo, ltrN = N inicial de Natalicchio -->
+  <h1 class="hero-name" id="heroName">LOREN<span class="ltr" id="ltrZ">Z</span>O<br><span class="g"><span class="ltr" id="ltrN">N</span>ATALICCHIO</span></h1>
 
   <div class="hero-sub">
     <div class="hero-pin"></div>
@@ -356,21 +358,15 @@ footer{padding:26px 52px;display:flex;justify-content:space-between;align-items:
       <div class="portrait-ph"></div>
       <div class="portrait-border"></div>
     </div>
-    <div>
-      <p class="about-p reveal"
-        data-es="Soy Lorenzo Natalicchio, realizador audiovisual radicado en Buenos Aires, Argentina. Egresado de la carrera de Diseño de Imagen y Sonido (UBA), me he especializado en el área de Fotografía con experiencia en proyectos de ficción y comerciales."
-        data-en="I'm Lorenzo Natalicchio, an audiovisual filmmaker based in Buenos Aires, Argentina. I graduated from the Image and Sound Design program at UBA, and have specialized in cinematography with experience in fiction and commercial projects.">
-        Soy Lorenzo Natalicchio, realizador audiovisual radicado en Buenos Aires, Argentina. Egresado de la carrera de Diseño de Imagen y Sonido (UBA), me he especializado en el área de Fotografía con experiencia en proyectos de ficción y comerciales.
+    <div class="about-bio">
+      <p class="about-p reveal">
+        Soy <strong>Lorenzo Natalicchio</strong>, realizador audiovisual radicado en <strong>Buenos Aires, Argentina</strong>. Egresado de la carrera de <strong>Diseño de Imagen y Sonido (UBA)</strong>, me he especializado en el área de <strong>Fotografía</strong> con experiencia en proyectos de <strong>ficción y comerciales</strong>.
       </p>
-      <p class="about-p reveal"
-        data-es="Actualmente me encuentro formándome como operador de steadicam, rol para el que cuento con equipo profesional propio y participación en más de una decena de cortometrajes."
-        data-en="I'm currently developing my practice as a steadicam operator — a role for which I have my own professional rig and participation in over a dozen short films.">
-        Actualmente me encuentro formándome como operador de steadicam, rol para el que cuento con equipo profesional propio y participación en más de una decena de cortometrajes.
+      <p class="about-p reveal">
+        Actualmente me encuentro formándome como <strong>operador de steadicam</strong>, rol para el que cuento con equipo propio y participación en más de una decena de cortometrajes.
       </p>
-      <p class="about-p reveal"
-        data-es="Haber sido el director de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos."
-        data-en="Having directed several projects allows me to bridge the narrative and the visual, integrating both languages to take the work where we all want it to go.">
-        Haber sido el director de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos.
+      <p class="about-p reveal">
+        Haber sido el <strong>director</strong> de diversos proyectos me permite articular lo narrativo y lo visual, integrando estos lenguajes para llevar a la obra a donde todos queremos.
       </p>
     </div>
   </div>
